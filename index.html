@@ -1,50 +1,60 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<head>
 
-        <link rel=stylesheet href="assets/css/style.css">
+    <meta charset="UTF-8">
 
-        <title>Test Your Javascript Skills</title>
-    </head>
+    <title>Quiz</title>
 
-    <body>
-        <header>
-            <button class="scores">View Your High Scores!</button>
-            <p class="timer">Time:75s</p>
-        </header> 
-        
-        <main>
-            <section class="quiz">
-                <h2 class="question">Questions</h2>
-                    <ul class="answers">
-                        <li class="answer1">Answer1</li>
-                        <li class="answer2">Answer2</li>
-                        <li class="answer3">Answer3</li>
-                        <li class="answer4">Answer4</li>
-                    </ul>
-            </section>
+    <link rel="stylesheet" href="style.css">
 
-            <section class="final">
-                <h2>You're Done!</h2>
-                <p>Final Score:</p>
-                <p>Enter Your Initials</p>
-                <button class="submit">Submit</button>
-            </section>
+</head>
 
-            <section class="highscores">
-                <h2>High Scores</h2>
-                <button class="back">Go back</button>
-                <button class="clear">Clear Score</button>
-            </section>
-        </main>
-        <script src="assets/script/script.js"></script>
-        <footer>
+<body>
 
-        </footer>
+    <div id="container">
 
-    </body>
+        <div id="start">Start Quiz!</div>
+
+        <div id="quiz" style="display: none">
+
+            <div id="question"></div>
+
+            <div id="qImg"></div>
+
+            <div id="choices">
+
+                <div class="choice" id="A" onclick="checkAnswer('A')"></div>
+
+                <div class="choice" id="B" onclick="checkAnswer('B')"></div>
+
+                <div class="choice" id="C" onclick="checkAnswer('C')"></div>
+
+            </div>
+
+            <div id="timer">
+
+                <div id="counter"></div>
+
+                <div id="btimeGauge"></div>
+
+                <div id="timeGauge"></div>
+
+            </div>
+
+            <div id="progress"></div>
+
+        </div>
+
+        <div id="scoreContainer" style="display: none"></div>
+
+    </div>
+
+    <script src="quiz.js"></script>
+
+</body>
+
 </html>
 
