@@ -29,7 +29,7 @@ let answerResult = document.getElementById("answer-result");
 let quizChoices = document.getElementById("quiz-choices");
 
 // Store high score 
-let previousScore = [];
+let storeHighScore = [];
 
 // Access the high scores from local storage
 let storedScores = JSON.parse(window.localStorage.getItem("highScores"));
@@ -86,6 +86,39 @@ function startQuestions() {
       userChoice.append(el);
     }
   }
+}
+
+// Store the user score
+function storeUserScore() {
+  timer.remove();
+  userChoice.textContent = "";
+
+  let userInitials = document.createElement("input");
+  let userScoresBtn = document.createElement("input");
+
+  results.innerHTML = 'You completed the quiz! You got a score of ${score} points! ENTER Initials: ';
+  userInitials.setAttribute("type", "text");
+  userScoresBtn.setAttribute("type", "button");
+  userScoresBtn.setAttribute("value", "My Score!");
+  userScoreBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    
+    let userScores = scoresDefined(storedScores, storeHighScore);
+    let initials = userInitials.value;
+    let userInitialsScore = {
+      initials: initials,
+      score: score,
+    };
+  
+    userScores.push(userInitialsScore);
+    keepScore(userScores);
+    displayUserScores();
+    clearUserScoresBtn();
+    goToQuizBtn();
+    seeHighScoresBtn.remove();
+  });
+  results.append(userInitials);
+  results.append(userScoresBtn);
 }
 
 
