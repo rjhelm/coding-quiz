@@ -1,74 +1,63 @@
-let start = document.getElementById("start");
 
-let quiz = document.getElementById("quiz");
+// Application Code
 
-let question = document.getElementById("question");
+// Game timer variables
+let timeLeft = 75;
 
-let qImg = document.getElementById("qImg");
+// Display Timer
+let timer = document.getElementById('timer');
 
-let choiceA = document.getElementById("A");
+// Current game score display
+let scoreDisplay = document.getElementById("score-display");
 
-let choiceB = document.getElementById("B");
+let scoreButton = document.getElementById("score-button");
 
-let choiceC = document.getElementById("C");
+// High Score Button
+let highScoreButton = document.getElementById("high-score");
 
-let counter = document.getElementById("counter");
+// Start Game Button
+let startGame = document.getElementById("start-game");
+startGame.addEventListener("click", startTimer);
 
-let timeGauge = document.getElementById("timeGauge");
+// Questions Elements
+let questionDisplay = document.getElementById("question-display");
 
-let progress = document.getElementById("progress");
+// Variable for answer result
+let answerResult = document.getElementById("answer-result");
 
-let scoreDiv = document.getElementById("scoreContainer");
+// Multiple options for the user to answer question
+let answerOptions = document.getElementById("answer-options");
 
-let startQuestion = 0;
-let endQuestion = question.length -1;
+// Store high score 
+let previousScore = [];
 
-let questions = [
-  {
-    title:
-      "Question: When using an if / else statement, how do you enclose the statement condition",
-    choices: ["parenthesis", "brackets", "quotations", "curly brackets"],
-    answer: "parenthesis",
-  },
-  {
-    title: "Question: Javascript is a ___ type language. Fill in the ___",
-    choices: ["dynamic", "static", "systemic", "variable"],
-    answer: "dynamic",
-  },
-  {
-    title:
-      "Question: When using Javascript, which of these passes data types by value?",
-    choices: ["non-primitive", "primitive", "variable", "operator"],
-    answer: "primitive",
-  },
-  {
-    title: "Which of the following is not a JavaScript Data Type?",
-    choices: ["Undefined", "Number", "Boolean", "Float"],
-    answer: "Float",
-  },
-  {
-    title:
-      "Question: Which of the following is correct about features of JavaScript?",
-    choices: [
-      "It can not Handling dates and time.",
-      "JavaScript is a object-based scripting language.",
-      "JavaScript is not interpreter based scripting language.",
-      "ALL",
-    ],
-    answer: "JavaScript is a object-based scripting language."
-  }
-];
+// Access the high scores from local storage
+let storedScores = JSON.parse(window.localStorage.getItem("highScores"));
 
-function renderQuestion() {
-    let q = questions[startQuestions];
+// Question user currently on
+let questionCurrent = 0;
 
-    question.innerHTML = "<p>" + q.question +"</p>";
+// Variable for tracking game score
+let score = 0
 
-    choiceA.innerHTML = q.choiceA;
-    choiceB.innerHTML = q.choiceB;
-    choiceC.innerHTML = q.choiceC;
-    choiceD.innerHTML = q.choiceD;
+// Function to begin timer when the user clicks to start the quiz
+function startTimer() {
+  let timeInterval = setInterval(function(){
+    secondsRemain--;
+    timer.textContent = "";
+    timer.textContent = "Time Remaining: " + timeLeft;
+    if (timeLeft <= 0 || questionCurrent === questionDisplay.length) {
+      clearInterval(timeInterval);
+      userScore();
+    }
+  }, 1000);
 }
+
+// Questions function for the quiz
+
+
+
+
 
 
 
