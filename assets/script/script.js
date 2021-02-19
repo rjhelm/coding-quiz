@@ -20,13 +20,13 @@ let startGame = document.getElementById("start-game");
 startGame.addEventListener("click", startTimer);
 
 // Questions Elements
-let questionDisplay = document.getElementById("question-display");
+let quizQuestions = document.getElementById("quiz-questions");
 
 // Variable for answer result
 let answerResult = document.getElementById("answer-result");
 
 // Multiple options for the user to answer question
-let answerOptions = document.getElementById("answer-options");
+let quizChoices = document.getElementById("quiz-choices");
 
 // Store high score 
 let previousScore = [];
@@ -54,7 +54,39 @@ function startTimer() {
 }
 
 // Questions function for the quiz
+function startQuestions() {
+  removeEls(startGame);
 
+  if (questionCurrent < questions.length) {
+    quizQuestions.innerHTML = questions[questionCurrent].title;
+    quizChoices.textContent = "";
+
+    for (let i = 0; i < questions[questionCurrent].userChoice.length; i++) {
+      let el = document.createElement("button");
+      el.innerText = question[questionCurrent].userChoice[i];
+      el.setAttribute("data-id", i);
+      el.addEventListener("click", function (event) {
+        event.stopPropagation();
+
+        if (el.innerText === questions[questionCurrent].answer) {
+          score += secondsRemain;
+        } else {
+          score -=10;
+          secondsRemain = secondsRemain - 15;
+        }
+          quizQuestions.innerHTML = "";
+
+          if (questionCurrent === questions.length) {
+            return;
+          } else {
+            questionCurrent++;
+            startQuestions();
+          }
+        });
+      userChoice.append(el);
+    }
+  }
+}
 
 
 
