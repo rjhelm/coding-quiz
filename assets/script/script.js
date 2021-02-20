@@ -44,18 +44,18 @@ let score = 0
 let questions = [
   {
     title: "Which of the following is not Javascript frameworks or libraries?",
-    multiChoice: ["Polymer", "Meteor", "Cassandra", "jQuery"],
+    userChoice: ["Polymer", "Meteor", "Cassandra", "jQuery"],
     correct: "Cassandra",
   },
   {
     title:
       "Among the following, which one is a ternary operator in Javascript?",
-    multiChoice: ["#", "::", "&", "?"],
+    userChoice: ["#", "::", "&", "?"],
     correct: "?",
   },
   {
     title: "What are the two basic groups of dataypes in JavaScript?",
-    multiChoice: [
+    userChoice: [
       "Primitive",
       "Reference types",
       "All of the above",
@@ -66,12 +66,12 @@ let questions = [
   {
     title:
       "Which of the following method checks if its argument is not a number?",
-    multiChoice: ["isNan()", "nonNaN()", "NaN()", "None of the above"],
+    userChoice: ["isNan()", "nonNaN()", "NaN()", "None of the above"],
     correct: "isNaN()",
   },
   {
     title: "What is the purpose of the Attr object in the HTML DOM?",
-    multiChoice: [
+    userChoice: [
       "Used to focus on a particular part of the HTML page",
       "HTML Attribute",
       "Used to arrange elements",
@@ -81,7 +81,7 @@ let questions = [
   },
   {
     title: "JavaScript can be written __________",
-    multiChoice: [
+    userChoice: [
       "directly into HTML pages",
       "directly on the server page",
       "directly into css file",
@@ -119,11 +119,11 @@ function startQuestions() {
       el.addEventListener("click", function (event) {
         event.stopPropagation();
 
-        if (el.innerText === questions[questionCurrent].answer) {
+        if (el.innerText === questions[questionCurrent].correct) {
           score += secondsRemain;
         } else {
-          score -=7;
-          secondsRemain = secondsRemain - 7;
+          score -=5;
+          secondsRemain = secondsRemain - 10;
         }
           quizQuestions.innerHTML = "";
 
@@ -147,7 +147,7 @@ function storeUserScore() {
   let userInitials = document.createElement("input");
   let userScoresBtn = document.createElement("input");
 
-  results.innerHTML = 'You completed the quiz! You got a score of ${score} points! ENTER Initials: ';
+  answerResult.innerHTML = 'You completed the quiz! You got a score of ${score} points! ENTER Initials: ';
   userInitials.setAttribute("type", "text");
   userScoresBtn.setAttribute("type", "button");
   userScoresBtn.setAttribute("value", "My Score!");
@@ -231,4 +231,16 @@ function removeScoreBtn() {
   scoreDisplay.append(removeBtn)
 }
 
-// Take user back to the quiz page
+// Return to quiz
+function quizReturnBtn() {
+  let toQuizBtn = document.createElement("input");
+  toQuizBtn.setAttribute("type", "button");
+  toQuizBtn.setAttribute("value", "Return To Quiz");
+  toQuizBtn.addEventListener("click", function(event){
+    event.preventDefault();
+    window.location.reload();
+  })
+  pageButtons.append(toQuizBtn)
+}
+
+viewScores();
