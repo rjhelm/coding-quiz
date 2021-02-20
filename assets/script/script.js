@@ -40,6 +40,57 @@ let questionCurrent = 0;
 // Variable for tracking game score
 let score = 0
 
+// Array for questions and answers
+let questions = [
+  {
+    title: "Which of the following is not Javascript frameworks or libraries?",
+    multiChoice: ["Polymer", "Meteor", "Cassandra", "jQuery"],
+    correct: "Cassandra",
+  },
+  {
+    title:
+      "Among the following, which one is a ternary operator in Javascript?",
+    multiChoice: ["#", "::", "&", "?"],
+    correct: "?",
+  },
+  {
+    title: "What are the two basic groups of dataypes in JavaScript?",
+    multiChoice: [
+      "Primitive",
+      "Reference types",
+      "All of the above",
+      "None of the above",
+    ],
+    correct: "All of the above",
+  },
+  {
+    title:
+      "Which of the following method checks if its argument is not a number?",
+    multiChoice: ["isNan()", "nonNaN()", "NaN()", "None of the above"],
+    correct: "isNaN()",
+  },
+  {
+    title: "What is the purpose of the Attr object in the HTML DOM?",
+    multiChoice: [
+      "Used to focus on a particular part of the HTML page",
+      "HTML Attribute",
+      "Used to arrange elements",
+      "Not mentioned",
+    ],
+    correct: "HTML Attribute",
+  },
+  {
+    title: "JavaScript can be written __________",
+    multiChoice: [
+      "directly into HTML pages",
+      "directly on the server page",
+      "directly into css file",
+      "directly into JS file and included in the HTML file",
+    ],
+    correct: "directly into JS file and included in the HTML file"
+  }
+];
+
 // Function to begin timer when the user clicks to start the quiz
 function startTimer() {
   let timeInterval = setInterval(function(){
@@ -165,7 +216,7 @@ function yourScores () {
     backBtn();
   });
 }
-
+// Option to remove the scores from the high score page
 function removeScoreBtn() {
   let removeBtn = document.createElement("input");
 
@@ -179,3 +230,5 @@ function removeScoreBtn() {
   })
   scoreDisplay.append(removeBtn)
 }
+
+// Take user back to the quiz page
