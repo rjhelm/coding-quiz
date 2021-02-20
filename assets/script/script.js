@@ -10,7 +10,7 @@ let timer = document.getElementById('timer');
 // Current game score display
 let scoreDisplay = document.getElementById("score-display");
 
-let scoreButton = document.getElementById("score-button");
+let pageButtons = document.getElementById("page-buttons");
 
 // High Score Button
 let highScoreButton = document.getElementById("high-score");
@@ -124,7 +124,7 @@ function storeUserScore() {
 // Section of code is for adding scores to local storage and displaying high scores.
 
 let keepScore = array => {
-  window.localStorage.setItem("highScores", JSON.stringify(array));
+  window.localStorage.setItem("userScores", JSON.stringify(array));
 }
 
 // Code to give definition to array
@@ -166,3 +166,16 @@ function yourScores () {
   });
 }
 
+function removeScoreBtn() {
+  let removeBtn = document.createElement("input");
+
+  removeBtn.setAttribute("type", "button");
+  removeBtn.setAttribute("value", "Remove Your Scores");
+  
+  removeBtn.addEventListener("click", function(event){
+    event.preventDefault();
+    removeEls(scoreDisplay);
+    window.localStorage.removeItem("userScores");
+  })
+  scoreDisplay.append(removeBtn)
+}
