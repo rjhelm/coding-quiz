@@ -16,8 +16,8 @@ let scoreButton = document.getElementById("score-button");
 let highScoreButton = document.getElementById("high-score");
 
 // Start Game Button
-let startGame = document.getElementById("start-game");
-startGame.addEventListener("click", startTimer);
+let startQuiz = document.getElementById("start-quiz");
+startQuiz.addEventListener("click", startTimer);
 
 // Questions Elements
 let quizQuestions = document.getElementById("quiz-questions");
@@ -55,7 +55,7 @@ function startTimer() {
 
 // Questions function for the quiz
 function startQuestions() {
-  removeEls(startGame);
+  removeEls(startQuiz);
 
   if (questionCurrent < questions.length) {
     quizQuestions.innerHTML = questions[questionCurrent].title;
@@ -103,16 +103,16 @@ function storeUserScore() {
   userScoreBtn.addEventListener("click", function(event) {
     event.preventDefault();
     
-    let userScores = scoresDefined(storedScores, storeHighScore);
+    let allUserScores = scoresDefined(storedScores, storeHighScore);
     let initials = userInitials.value;
     let userInitialsScore = {
       initials: initials,
       score: score,
     };
   
-    userScores.push(userInitialsScore);
-    keepScore(userScores);
-    displayUserScores();
+    allUserScores.push(userInitialsScore);
+    keepScore(allUserScores);
+    displayAllUserScores();
     clearUserScoresBtn();
     goToQuizBtn();
     seeHighScoresBtn.remove();
@@ -121,8 +121,38 @@ function storeUserScore() {
   results.append(userScoresBtn);
 }
 
+// Section of code is for adding scores to local storage and displaying high scores.
 
+let keepScore = array => {
+  window.localStorage.setItem("highScores", JSON.stringify(array));
+}
 
+// Code to give definition to array
+let getAllUserScores = (arr1, arr2) => {
+  if (arr1 !== null){
+    return arr1
+  } else {
+    return arr2
+  }
+}
+
+let removeEls = (...els) => {
+  for (let el of els) el.remove();
+}
+
+// Function to display past scores
+function displayAllUserScores() {
+  removeEls(timer, startQuiz, results);
+  let keepScore = getAllUserScores(storedScores, storeHighScore);
+
+  keepScore.forEach(obj => {
+    let userHighScores = obj.score;
+    let initials = obj.initials;
+    let answerResultP = document.createElement("p");
+    answerResultP.innerText = `${initials}: ${userHighScores}`;
+    scoresDiv.append(answerResultsP);
+  });
+}
 
 
 
