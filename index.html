@@ -16,40 +16,21 @@
 
     <div id="container">
 
-        <div id="start">Start Quiz!</div>
+       <input id="your-scores" type="button" value="See Your Scores!">
+            <span id="timer">🕰Time: 0</span>
+            <div id="score-display"></div>
 
-        <div id="quiz" style="display: none">
+            <div id="quiz-questions"></div>
+            <div id="quiz-choices"></div>
 
-            <div id="question"></div>
-
-            <div id="qImg"></div>
-
-            <div id="choices">
-
-                <div class="choice" id="A" onclick="checkAnswer('A')"></div>
-
-                <div class="choice" id="B" onclick="checkAnswer('B')"></div>
-
-                <div class="choice" id="C" onclick="checkAnswer('C')"></div>
-
+            <form id="answer-result"></form>
+            <div id="scoreButtons">
+                <input id="start-quiz" type="button" value="Lets Start The Quiz!">
             </div>
+        
 
-            <div id="timer">
-
-                <div id="counter"></div>
-
-                <div id="btimeGauge"></div>
-
-                <div id="timeGauge"></div>
-
-            </div>
-
-            <div id="progress"></div>
-
-        </div>
-
-        <div id="score-display" style="display: none"></div>
-
+        
+    
     </div>
 
     <script src="quiz.js"></script>

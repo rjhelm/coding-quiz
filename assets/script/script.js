@@ -71,8 +71,8 @@ function startQuestions() {
         if (el.innerText === questions[questionCurrent].answer) {
           score += secondsRemain;
         } else {
-          score -=10;
-          secondsRemain = secondsRemain - 15;
+          score -=7;
+          secondsRemain = secondsRemain - 7;
         }
           quizQuestions.innerHTML = "";
 
@@ -146,13 +146,23 @@ function displayAllUserScores() {
   let keepScore = getAllUserScores(storedScores, storeHighScore);
 
   keepScore.forEach(obj => {
-    let userHighScores = obj.score;
+    let userSavedScores = obj.score;
     let initials = obj.initials;
     let answerResultP = document.createElement("p");
-    answerResultP.innerText = `${initials}: ${userHighScores}`;
+    answerResultP.innerText = `${initials}: ${userSavedScores}`;
     scoresDiv.append(answerResultsP);
   });
 }
 
-
+// Function for viewing the saved scores by clicking a button on the page
+function yourScores () {
+  yourScoresBtn.addEVentListener("click", function(event) {
+    event.preventDefault();
+    removeEls(timer, startQuiz);
+    displayAllUserScores();
+    removeEls(yourScoresBtn);
+    removeScoreBtn();
+    backBtn();
+  });
+}
 
