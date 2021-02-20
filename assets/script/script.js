@@ -2,7 +2,7 @@
 // Application Code
 
 // Game timer variables
-let timeLeft = 75;
+let timeLeft = 76;
 
 // Display Timer
 let timer = document.getElementById('timer');
@@ -13,7 +13,7 @@ let scoreDisplay = document.getElementById("score-display");
 let pageButtons = document.getElementById("page-buttons");
 
 // High Score Button
-let highScore = document.getElementById("high-score");
+let highScoreBtn = document.getElementById("high-score");
 
 // Start Game Button
 let startQuiz = document.getElementById("start-quiz");
@@ -114,17 +114,15 @@ function startQuestions() {
     quizChoices.textContent = "";
 
     for (let i = 0; i < questions[questionCurrent].userChoice.length; i++) {
-      let el = document.createElement("button").style.backgroundColor = "purple";
-      el.innerText = question[questionCurrent].userChoice[i];
+      let el = document.createElement("button")
+      el.innerText = questions[questionCurrent].userChoice[i];
       el.setAttribute("data-id", i);
       el.addEventListener("click", function (event) {
         event.stopPropagation();
 
         if (el.innerText === questions[questionCurrent].correct) {
-          document.getElementById("el").style.backgroundColor = "green";
           score += timeLeft;
         } else {
-          document.getElementById("el").style.backgroundColor = "red";
           score -=10;
           timeLeft = timeLeft - 15;
         }
@@ -137,7 +135,7 @@ function startQuestions() {
             startQuestions();
           }
         });
-      userChoice.append(el);
+      quizChoices.append(el);
     }
   }
 }
@@ -145,31 +143,30 @@ function startQuestions() {
 // Store the user score
 function storeUserScore() {
   timer.remove();
-  userChoice.textContent = "";
+  quizChoices.textContent = "";
 
   let userInitials = document.createElement("input");
   let userScoresBtn = document.createElement("input");
 
-  answerResult.innerHTML = 'You completed the quiz! You got a score of ${score} points! ENTER Initials: ';
+  answerResult.innerHTML = 'You completed the quiz! Your score was ${score}! ENTER Initials: ';
   userInitials.setAttribute("type", "text");
   userScoresBtn.setAttribute("type", "button");
   userScoresBtn.setAttribute("value", "My Score!");
-  userScoreBtn.addEventListener("click", function(event) {
+  userScoresBtn.addEventListener("click", function(event) {
     event.preventDefault();
-    
-    let allUserScores = scoresDefined(storedScores, storeHighScore);
+    let scoresGathered = defineScoresGathered(storedScores, storeHighScore);
     let initials = userInitials.value;
     let userInitialsScore = {
       initials: initials,
       score: score,
     };
   
-    allUserScores.push(userInitialsScore);
-    keepScore(allUserScores);
+    scoresGathered.push(userInitialsScore);
+    keepScore(scoresGathered);
     displayAllUserScores();
-    clearUserScoresBtn();
+    removeScoreBtn();
     goToQuizBtn();
-    seeHighScoresBtn.remove();
+    highScoreBtn.remove();
   });
   results.append(userInitials);
   results.append(userScoresBtn);
@@ -182,13 +179,13 @@ let keepScore = array => {
 }
 
 // Code to give definition to array
-let getAllUserScores = (arr1, arr2) => {
-  if (arr1 !== null){
-    return arr1
+let defineScoresGathered = (arr1, arr2) => {
+  if (arr1 !== null) {
+    return arr1;
   } else {
-    return arr2
+    return arr2;
   }
-}
+};
 
 let removeEls = (...els) => {
   for (let el of els) el.remove();
@@ -197,9 +194,9 @@ let removeEls = (...els) => {
 // Function to display past scores
 function displayAllUserScores() {
   removeEls(timer, startQuiz, results);
-  let keepScore = getAllUserScores(storedScores, storeHighScore);
+  let scoresGathered = defineScoresGathered(storedScores, storeHighScore);
 
-  keepScore.forEach(obj => {
+  scoresGathered.forEach(obj => {
     let userSavedScores = obj.score;
     let initials = obj.initials;
     let answerResultP = document.createElement("p");
@@ -209,12 +206,12 @@ function displayAllUserScores() {
 }
 
 // Function for viewing the saved scores by clicking a button on the page
-function yourScores () {
-  highScore.addEVentListener("click", function(event) {
+function highScore () {
+  highScoreBtn.addEventListener("click", function(event) {
     event.preventDefault();
     removeEls(timer, startQuiz);
     displayAllUserScores();
-    removeEls(highScore);
+    removeEls(highScoreBtn);
     removeScoreBtn();
     toQuizBtn();
   });
@@ -246,4 +243,4 @@ function quizReturnBtn() {
   pageButtons.append(toQuizBtn)
 }
 
-yourScores();
+highScore();
