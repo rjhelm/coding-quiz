@@ -13,7 +13,7 @@ let scoreDisplay = document.getElementById("score-display");
 let pageButtons = document.getElementById("page-buttons");
 
 // High Score Button
-let highScoreButton = document.getElementById("high-score");
+let highScore = document.getElementById("high-score");
 
 // Start Game Button
 let startQuiz = document.getElementById("start-quiz");
@@ -37,55 +37,55 @@ let storedScores = JSON.parse(window.localStorage.getItem("highScores"));
 // Question user currently on
 let questionCurrent = 0;
 
-// Variable for tracking game score
+// Variable for tracking quiz score
 let score = 0
 
 // Array for questions and answers
 let questions = [
   {
     title: "Which of the following is not Javascript frameworks or libraries?",
-    userChoice: ["Polymer", "Meteor", "Cassandra", "jQuery"],
+    userChoice: ["1. Polymer", "2. Meteor", "3. Cassandra", "4. jQuery"],
     correct: "Cassandra",
   },
   {
     title:
       "Among the following, which one is a ternary operator in Javascript?",
-    userChoice: ["#", "::", "&", "?"],
+    userChoice: ["1. #", "2. ::", "3. &", "4. ?"],
     correct: "?",
   },
   {
     title: "What are the two basic groups of dataypes in JavaScript?",
     userChoice: [
-      "Primitive",
-      "Reference types",
-      "All of the above",
-      "None of the above",
+      "1. Primitive",
+      "2. Reference types",
+      "3. All of the above",
+      "4. None of the above",
     ],
     correct: "All of the above",
   },
   {
     title:
       "Which of the following method checks if its argument is not a number?",
-    userChoice: ["isNan()", "nonNaN()", "NaN()", "None of the above"],
+    userChoice: ["1. isNan()", "2. nonNaN()", "3. NaN()", "4. None of the above"],
     correct: "isNaN()",
   },
   {
     title: "What is the purpose of the Attr object in the HTML DOM?",
     userChoice: [
-      "Used to focus on a particular part of the HTML page",
-      "HTML Attribute",
-      "Used to arrange elements",
-      "Not mentioned",
+      "1. Used to focus on a particular part of the HTML page",
+      "2. HTML Attribute",
+      "3. Used to arrange elements",
+      "4. Not mentioned",
     ],
     correct: "HTML Attribute",
   },
   {
     title: "JavaScript can be written __________",
     userChoice: [
-      "directly into HTML pages",
-      "directly on the server page",
-      "directly into css file",
-      "directly into JS file and included in the HTML file",
+      "1. directly into HTML pages",
+      "2. directly on the server page",
+      "3. directly into css file",
+      "4. directly into JS file and included in the HTML file",
     ],
     correct: "directly into JS file and included in the HTML file"
   }
@@ -93,13 +93,14 @@ let questions = [
 
 // Function to begin timer when the user clicks to start the quiz
 function startTimer() {
+  startQuestions();
   let timeInterval = setInterval(function(){
-    secondsRemain--;
+    timeLeft--;
     timer.textContent = "";
     timer.textContent = "Time Remaining: " + timeLeft;
-    if (timeLeft <= 0 || questionCurrent === questionDisplay.length) {
+    if (timeLeft <= 0 || questionCurrent === questions.length) {
       clearInterval(timeInterval);
-      userScore();
+      storeUserScore();
     }
   }, 1000);
 }
@@ -113,17 +114,19 @@ function startQuestions() {
     quizChoices.textContent = "";
 
     for (let i = 0; i < questions[questionCurrent].userChoice.length; i++) {
-      let el = document.createElement("button");
+      let el = document.createElement("button").style.backgroundColor = "purple";
       el.innerText = question[questionCurrent].userChoice[i];
       el.setAttribute("data-id", i);
       el.addEventListener("click", function (event) {
         event.stopPropagation();
 
         if (el.innerText === questions[questionCurrent].correct) {
-          score += secondsRemain;
+          document.getElementById("el").style.backgroundColor = "green";
+          score += timeLeft;
         } else {
-          score -=5;
-          secondsRemain = secondsRemain - 10;
+          document.getElementById("el").style.backgroundColor = "red";
+          score -=10;
+          timeLeft = timeLeft - 15;
         }
           quizQuestions.innerHTML = "";
 
@@ -201,19 +204,19 @@ function displayAllUserScores() {
     let initials = obj.initials;
     let answerResultP = document.createElement("p");
     answerResultP.innerText = `${initials}: ${userSavedScores}`;
-    scoresDiv.append(answerResultsP);
+    pageButtons.append(answerResultsP);
   });
 }
 
 // Function for viewing the saved scores by clicking a button on the page
 function yourScores () {
-  yourScoresBtn.addEVentListener("click", function(event) {
+  highScore.addEVentListener("click", function(event) {
     event.preventDefault();
     removeEls(timer, startQuiz);
     displayAllUserScores();
-    removeEls(yourScoresBtn);
+    removeEls(highScore);
     removeScoreBtn();
-    backBtn();
+    toQuizBtn();
   });
 }
 // Option to remove the scores from the high score page
@@ -243,4 +246,4 @@ function quizReturnBtn() {
   pageButtons.append(toQuizBtn)
 }
 
-viewScores();
+yourScores();
