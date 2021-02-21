@@ -1,96 +1,96 @@
+// Javascript Quiz Code 
 
-// Quiz Code
-// Array for questions and answers
+// Questions array for questions user will be asked
 let questions = [
   {
-    title: "Which of the following is not Javascript frameworks or libraries?",
+    askUser: "Which of the following is not Javascript frameworks or libraries?",
     userChoice: ["1. Polymer", "2. Meteor", "3. Cassandra", "4. jQuery"],
-    correct: "Cassandra",
+    correctAnswer: "Cassandra",
   },
   {
-    title:
+    askUser:
       "Among the following, which one is a ternary operator in Javascript?",
     userChoice: ["1. #", "2. ::", "3. &", "4. ?"],
-    correct: "?",
+    correctAnswer: "?",
   },
   {
-    title: "What are the two basic groups of dataypes in JavaScript?",
+    askUser: "What are the two basic groups of dataypes in JavaScript?",
     userChoice: [
       "1. Primitive",
       "2. Reference types",
       "3. All of the above",
       "4. None of the above",
     ],
-    correct: "All of the above",
+    correctAnswer: "All of the above",
   },
   {
-    title:
+    askUser:
       "Which of the following method checks if its argument is not a number?",
-    userChoice: ["1. isNan()", "2. nonNaN()", "3. NaN()", "4. None of the above"],
-    correct: "isNaN()",
+    userChoice: [
+      "1. isNan()",
+      "2. nonNaN()",
+      "3. NaN()",
+      "4. None of the above",
+    ],
+    correctAnswer: "isNaN()",
   },
   {
-    title: "What is the purpose of the Attr object in the HTML DOM?",
+    askUser: "What is the purpose of the Attr object in the HTML DOM?",
     userChoice: [
       "1. Used to focus on a particular part of the HTML page",
       "2. HTML Attribute",
       "3. Used to arrange elements",
       "4. Not mentioned",
     ],
-    correct: "HTML Attribute",
+    correctAnswer: "HTML Attribute",
   },
   {
-    title: "JavaScript can be written __________",
+    askUser: "JavaScript can be written __________",
     userChoice: [
       "1. directly into HTML pages",
       "2. directly on the server page",
       "3. directly into css file",
       "4. directly into JS file and included in the HTML file",
     ],
-    correct: "directly into JS file and included in the HTML file"
-  }
+    correctAnswer: "directly into JS file and included in the HTML file",
+  },
 ];
-// Timer Variables
-let timer = document.getElementById('timer');
 
-let timeLeft = 76;
+// Start time for quiz timer
+let timeLeft = 75;
 
+let timer = document.getElementById("timer");
 
-// Reference for buttons
+let scoresContainer = document.getElementById("scores-container");
+// Reference for created buttons to placed in
 let pageButtons = document.getElementById("buttons");
-
+// Reference for score information
 let viewScoresBtn = document.getElementById("view-scores");
 
-
-// Variables for the quiz questions and answers
-let currentQuestion = 0; // keep count
-
-let quizQuestions = document.getElementById("quiz-questions");
-
-let choiceResult = document.getElementById("choice-result");
-
-let quizChoices = document.getElementById("quiz-choices");
-
-
-// Variables for the users score
-let scoresContainer = document.getElementById("scores-container");
-
-let userScores = JSON.parse(window.localStorage.getItem("userScores"));
-
-let emptyScore = [];
-
-let score = 0
-
-// Start Game Button
+// Start the quiz 
 let startQuiz = document.getElementById("start-quiz");
 startQuiz.addEventListener("click", quizTime);
 
+// Quiz questions, multiple choices, and answer result(correct or wrong)
+let quizQuestions = document.getElementById("quiz-questions");
 
+let quizResults = document.getElementById("quiz-results");
 
-// Function to begin timer when the user clicks to start the quiz
+let quizChoice = document.getElementById("quiz-choice");
+
+// Variables for tracking user input information
+let emptyScore = [];
+
+let userScores = JSON.parse(window.localStorage.getItem("userScores"));
+
+let currentQuestion = 0;
+
+let score = 0;
+
+// Timer start function
 function quizTime() {
   generateQuestions();
-  let defineTimer = setInterval(function() {
+  let defineTimer = setInterval(function () {
     timeLeft--;
     timer.textContent = "";
     timer.textContent = "Time Remaining: " + timeLeft;
@@ -101,62 +101,65 @@ function quizTime() {
   }, 1000);
 }
 
-// Questions function for the quiz
+// Once quiz is started pull the information from the array above
+// Create the Question Dialog and buttons to select a choice
 function generateQuestions() {
-  removeEls(startQuiz);
+  removeElement(startQuiz);
 
   if (currentQuestion < questions.length) {
-    quizQuestions.innerHTML = questions[currentQuestion].title;
-    quizChoices.textContent = "";
+    quizQuestions.innerHTML = questions[currentQuestion].askUser;
+    quizChoice.textContent = "";
 
     for (let i = 0; i < questions[currentQuestion].userChoice.length; i++) {
-      let choiceBtn = document.createElement("button")
-      choiceBtn.innerText = questions[currentQuestion].userChoice[i];
-      choiceBtn.setAttribute("data-id", i);
-      choiceBtn.addEventListener("click", function (event) {
+      let quizBtn = document.createElement("button");
+      quizBtn.innerText = questions[currentQuestion].userChoice[i];
+      quizBtn.setAttribute("data-id", i);
+      quizBtn.addEventListener("click", function (event) {
         event.stopPropagation();
 
-        if (choiceBtn.innerText === questions[currentQuestion].correct) {
+        if (quizBtn.innerText === questions[currentQuestion].correctAnswer) {
           score += timeLeft;
         } else {
-          score -=10;
+          score -= 10;
           timeLeft = timeLeft - 15;
         }
-          quizQuestions.innerHTML = "";
 
-          if (currentQuestion === questions.length) {
-            return;
-          } else {
-            currentQuestion++;
-            generateQuestions();
-          }
-        });
-      quizChoices.append(choiceBtn);
+        quizQuestions.innerHTML = "";
+
+        if (currentQuestion === questions.length) {
+          return;
+        } else {
+          currentQuestion++;
+          generateQuestions();
+        }
+      });
+      quizChoice.append(quizBtn);
     }
   }
 }
 
-// Store the user score
+// Generate the score after quiz is complete and then gives user option to save
 function generateScore() {
   timer.remove();
-  quizChoices.textContent = "";
+  quizChoice.textContent = "";
 
   let userInitials = document.createElement("input");
   let saveScoreBtn = document.createElement("input");
 
-  choiceResult.innerHTML = 'You completed the quiz! Your score was ${score}! ENTER Initials: ';
+  quizResults.innerHTML = `You scored ${score} points! Enter initials: `;
   userInitials.setAttribute("type", "text");
   saveScoreBtn.setAttribute("type", "button");
   saveScoreBtn.setAttribute("value", "Post My Score!");
-  saveScoreBtn.addEventListener("click", function(event) {
+  saveScoreBtn.addEventListener("click", function (event) {
     event.preventDefault();
     let savedScores = isLocalScores(userScores, emptyScore);
-  let initials = userInitials.value;
-  let initialsScore = {
-    initials: initials,
-    score: score,
-  };
-  
+
+    let initials = userInitials.value;
+    let initialsScore = {
+      initials: initials,
+      score: score,
+    };
+
     savedScores.push(initialsScore);
     localScores(savedScores);
     userViewScores();
@@ -164,22 +167,15 @@ function generateScore() {
     returnToQuiz();
     viewScoresBtn.remove();
   });
-  choiceResult.append(userInitials);
-  choiceResult.append(saveScoreBtn);
+  quizResults.append(userInitials);
+  quizResults.append(saveScoreBtn);
 }
 
-// Section of code is for adding scores to local storage and displaying high scores.
-
-let removeElement = (...els) => {
+const removeElement = (...els) => {
   for (let el of els) el.remove();
 };
 
-let localScores = array => {
-  window.localStorage.setItem("userScores", JSON.stringify(array));
-}
-
-// Code to give definition to array
-let isLocalScores = (arr1, arr2) => {
+const isLocalScores = (arr1, arr2) => {
   if (arr1 !== null) {
     return arr1;
   } else {
@@ -187,59 +183,55 @@ let isLocalScores = (arr1, arr2) => {
   }
 };
 
+const localScores = (array) => {
+  window.localStorage.setItem("userScores", JSON.stringify(array));
+};
 
-
-// Function to display past scores
 function userViewScores() {
-  removeElement(timer, startQuiz, choiceResults);
+  removeElement(timer, startQuiz, quizResults);
   let savedScores = isLocalScores(userScores, emptyScore);
 
-  savedScores.forEach(obj => {
+  savedScores.forEach((obj) => {
     let initials = obj.initials;
     let userScores = obj.score;
-    let choiceResultsP = document.createElement("p");
-    choiceResultP.innerText = `${initials}: ${userScores}`;
-    scoresContainer.append(choiceResultsP);
+    let quizResultsP = document.createElement("p");
+    quizResultsP.innerText = `${initials}: ${userScores}`;
+    scoresContainer.append(quizResultsP);
   });
 }
 
-// Function for viewing the saved scores by clicking a button on the page
-function viewScores () {
-  viewScoresBtn.addEventListener("click", function(event) {
+function viewScores() {
+  viewScoresBtn.addEventListener("click", function (event) {
     event.preventDefault();
     removeElement(timer, startQuiz);
     userViewScores();
     removeElement(viewScoresBtn);
     userClearBtn();
-    toQuizBtn();
+    returnToQuiz();
   });
 }
-// Option to remove the scores from the high score page
+
 function userClearBtn() {
   let clearBtn = document.createElement("input");
-
   clearBtn.setAttribute("type", "button");
-  clearBtn.setAttribute("value", "Remove Your Scores");
-  
-  clearBtn.addEventListener("click", function(event){
+  clearBtn.setAttribute("value", "Clear Your Scores");
+  clearBtn.addEventListener("click", function (event) {
     event.preventDefault();
     removeElement(scoresContainer);
     window.localStorage.removeItem("userScores");
-  })
-  
-  scoresContainer.append(clearBtn)
+  });
+  scoresContainer.append(clearBtn);
 }
 
-// Return to quiz
 function returnToQuiz() {
   let toQuizBtn = document.createElement("input");
   toQuizBtn.setAttribute("type", "button");
   toQuizBtn.setAttribute("value", "Return To Quiz");
-  toQuizBtn.addEventListener("click", function(event){
+  toQuizBtn.addEventListener("click", function (event) {
     event.preventDefault();
     window.location.reload();
-  })
-  pageButtons.append(toQuizBtn)
+  });
+  pageButtons.append(toQuizBtn);
 }
 
 viewScores();
