@@ -1,44 +1,40 @@
 
-// Application Code
+// Quiz Code
 
-// Game timer variables
-let timeLeft = 76;
-
-// Display Timer
+// Timer Variables
 let timer = document.getElementById('timer');
 
-// Current game score display
-let scoreDisplay = document.getElementById("score-display");
+let timeLeft = 76;
 
-let pageButtons = document.getElementById("page-buttons");
 
-// High Score Button
-let highScoreBtn = document.getElementById("high-score");
+// Reference for buttons
+let pageButtons = document.getElementById("buttons");
+
+let viewScoresBtn = document.getElementById("view-scores");
+
+
+// Variables for the quiz questions and answers
+let currentQuestion = 0; // keep count
+
+let quizQuestions = document.getElementById("quiz-questions");
+
+let choiceResult = document.getElementById("choice-result");
+
+let quizChoices = document.getElementById("quiz-choices");
+
+
+// Variables for the users score
+let scoresContainer = document.getElementById("scores-container");
+
+let userScores = JSON.parse(window.localStorage.getItem("highScores"));
+
+let emptyScore = [];
+
+let score = 0
 
 // Start Game Button
 let startQuiz = document.getElementById("start-quiz");
 startQuiz.addEventListener("click", startTimer);
-
-// Questions Elements
-let quizQuestions = document.getElementById("quiz-questions");
-
-// Variable for answer result
-let answerResult = document.getElementById("answer-result");
-
-// Multiple options for the user to answer question
-let quizChoices = document.getElementById("quiz-choices");
-
-// Store high score 
-let storeHighScore = [];
-
-// Access the high scores from local storage
-let storedScores = JSON.parse(window.localStorage.getItem("highScores"));
-
-// Question user currently on
-let questionCurrent = 0;
-
-// Variable for tracking quiz score
-let score = 0
 
 // Array for questions and answers
 let questions = [
@@ -98,7 +94,7 @@ function startTimer() {
     timeLeft--;
     timer.textContent = "";
     timer.textContent = "Time Remaining: " + timeLeft;
-    if (timeLeft <= 0 || questionCurrent === questions.length) {
+    if (timeLeft <= 0 || currentQuestion === questions.length) {
       clearInterval(timeInterval);
       storeUserScore();
     }
@@ -109,18 +105,18 @@ function startTimer() {
 function startQuestions() {
   removeEls(startQuiz);
 
-  if (questionCurrent < questions.length) {
-    quizQuestions.innerHTML = questions[questionCurrent].title;
+  if (currentQuestion < questions.length) {
+    quizQuestions.innerHTML = questions[currentQuestion].title;
     quizChoices.textContent = "";
 
-    for (let i = 0; i < questions[questionCurrent].userChoice.length; i++) {
+    for (let i = 0; i < questions[currentQuestion].userChoice.length; i++) {
       let el = document.createElement("button")
-      el.innerText = questions[questionCurrent].userChoice[i];
+      el.innerText = questions[currentQuestion].userChoice[i];
       el.setAttribute("data-id", i);
       el.addEventListener("click", function (event) {
         event.stopPropagation();
 
-        if (el.innerText === questions[questionCurrent].correct) {
+        if (el.innerText === questions[currentQuestion].correct) {
           score += timeLeft;
         } else {
           score -=10;
@@ -128,10 +124,10 @@ function startQuestions() {
         }
           quizQuestions.innerHTML = "";
 
-          if (questionCurrent === questions.length) {
+          if (currentQuestion === questions.length) {
             return;
           } else {
-            questionCurrent++;
+            currentQuestion++;
             startQuestions();
           }
         });
@@ -148,13 +144,13 @@ function storeUserScore() {
   let userInitials = document.createElement("input");
   let userScoresBtn = document.createElement("input");
 
-  answerResult.innerHTML = 'You completed the quiz! Your score was ${score}! ENTER Initials: ';
+  choiceResult.innerHTML = 'You completed the quiz! Your score was ${score}! ENTER Initials: ';
   userInitials.setAttribute("type", "text");
   userScoresBtn.setAttribute("type", "button");
   userScoresBtn.setAttribute("value", "My Score!");
   userScoresBtn.addEventListener("click", function(event) {
     event.preventDefault();
-    let scoresGathered = defineScoresGathered(storedScores, storeHighScore);
+    let scoresGathered = defineScoresGathered(userScores, emptyScore);
     let initials = userInitials.value;
     let userInitialsScore = {
       initials: initials,
@@ -166,7 +162,7 @@ function storeUserScore() {
     displayAllUserScores();
     removeScoreBtn();
     goToQuizBtn();
-    highScoreBtn.remove();
+    viewScoresBtn.remove();
   });
   results.append(userInitials);
   results.append(userScoresBtn);
@@ -194,24 +190,24 @@ let removeEls = (...els) => {
 // Function to display past scores
 function displayAllUserScores() {
   removeEls(timer, startQuiz, results);
-  let scoresGathered = defineScoresGathered(storedScores, storeHighScore);
+  let scoresGathered = defineScoresGathered(userScores, emptyScore);
 
   scoresGathered.forEach(obj => {
     let userSavedScores = obj.score;
     let initials = obj.initials;
-    let answerResultP = document.createElement("p");
-    answerResultP.innerText = `${initials}: ${userSavedScores}`;
-    pageButtons.append(answerResultsP);
+    let choiceResultP = document.createElement("p");
+    choiceResultP.innerText = `${initials}: ${userSavedScores}`;
+    pageButtons.append(choiceResultsP);
   });
 }
 
 // Function for viewing the saved scores by clicking a button on the page
 function highScore () {
-  highScoreBtn.addEventListener("click", function(event) {
+  viewScoresBtn.addEventListener("click", function(event) {
     event.preventDefault();
     removeEls(timer, startQuiz);
     displayAllUserScores();
-    removeEls(highScoreBtn);
+    removeEls(viewScoresBtn);
     removeScoreBtn();
     toQuizBtn();
   });
@@ -225,10 +221,11 @@ function removeScoreBtn() {
   
   removeBtn.addEventListener("click", function(event){
     event.preventDefault();
-    removeEls(scoreDisplay);
+    removeEls(scoresContainer);
     window.localStorage.removeItem("userScores");
   })
-  scoreDisplay.append(removeBtn)
+  
+  scoresContainer.append(removeBtn)
 }
 
 // Return to quiz
