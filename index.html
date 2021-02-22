@@ -4,33 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
     <title>Test Your Javascript Knowledge || Coding Quiz</title>
 
 </head>
+    <body>
+        <div class="container">
 
-<body>
-    <input id="view-scores" type="button" value="View Scores">
+            <div id="start-container">
+                <h2>Javascript Quiz!</h2>
+                <h2>Test your knowledge and save your score!</h2>
+                <h2>Complete this short quiz, wrong answers deduct time and score!</h2>
+                <button id="start-btn">Let's Get It</button>
+                <button id="startPageHighscore" onclick="showScores()">View Scores</button>
+            </div>
 
-    <span id="timer">Time Remaining: 0</span>
+       <div id="quiz-body">
+           <div id="timer">Time left: </div>
+           <div id="questions">
 
-    <div id="scores-container"></div>
-    
-    <div id="quiz-questions"></div>
+               <p>Questions Placeholder</p>
+           </div>
+           <button id="a" onclick="checkAnswer('a')">A</button>
+           <button id="b" onclick="checkAnswer('b')">B</button>
+           <button id="c" onclick="checkAnswer('c')">C</button>
+           <button id="d" onclick="checkAnswer('d')">D</button>
+           <div id="choice-result"></div>
+       </div>
+       <div id="quiz-complete">
 
-    <div id="quiz-choice"></div>
-    
-    <form id="quiz-results"></form>
-
-    <div id="buttons">
-        <input id="start-quiz" type="button" value="Start Quiz">
-    </div>
-
-    <!-- <script src="assets/questions.js"></script> -->
-    <script src="./assets/script/script.js"></script>
-
-</body>
+        <div id="user-score"></div>
+        <input type="text" size="40" placeholder="Enter your initials and save this score!" name="initials" id="initials" />
+        <button id="save-score">Save Your Score</button>
+        </div>
+        <div id="score-container">
+            <div id="scores-page">
+                <div id="scores-header">
+                    <h3>User Initials</h3>
+                    <h3>Score</h3>
+                </div>
+                <div id="score-initials"></div>
+                <div id="user-saved"></div>
+            </div>
+            <div id="back-clear">
+                <button id="playAgain" onclick="tryAgain()">Go Back</button>
+                <button id="clearHighscore" onclick="clearScore()">Clear Scores</button>
+            </div>
+        </div>
+        </div>
+        <script src="./assets/script/script.js"></script>
+        </body> 
 
 
 </html>
